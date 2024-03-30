@@ -1,33 +1,27 @@
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {useState} from "react";
+import {useAuth} from "./contexts/AuthContext";
+import {Route, Router, Routes, redirect} from "react-router-dom";
+import Login from "./pages/login";
+import {ProtectedRoute} from "./components/ProtectedRoute";
+import TODO from "./pages/todo";
+import {AuthProvider} from "./contexts/AuthContext";
 
 function App() {
-  const [tasks, setTasks] = useState([])
-  const addTask= function(task){
-    if(!task){
-      return
-    }
-    setTasks([...tasks,task])
-  }
-  return ( <div className="App">
-    <h1>Welcome to my todo app</h1>
-    <input type="text" placeholder="Add a new task" onKeyPress={event=>{
-      if (event.key==='Enter'){
-          addTask(event.target.value);
-          event.target.value = "";
-        }
-      }
-    }
-      />
-    <ul>
-      {
-        tasks.map((task,index)=>
-          (<li key={index}>{task}</li>)
-        )
-      }
-    </ul>
-  </div>);
+const {authToken, updateToken} = useAuth();
+return <Router>
+        <AuthProvider>
+    <Routes>
+        <Route path="/login"><Login /></Route>
+        <ProtectedRoute path="/todo" component={TODO}/>
+        <Route exact path="/" render={()=>{
+            authToken? <redirect to="/todo"/>:<redirect to="/login"/>
+        }} />
+    </Routes>
+    </AuthProvider>
+</Router>
 }
 
 export default App;
