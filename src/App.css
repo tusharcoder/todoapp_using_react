@@ -24,3 +24,45 @@
 .loginForm > .button {
     align-self: center;
 }
+
+/* todo page
+ */
+
+.todoContainer{
+    display: flex;
+    flex-direction: row;
+}
+.nav{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    justify-content: flex-start;
+}
+.nav .item{
+    border-bottom: lightgrey 1px solid ;
+    padding: 10px 5px 10px 20%;
+}
+.heading{
+    align-self: center;
+}
+
+.contentContainer{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.taskList{
+    display: flex;
+    flex-direction: column;
+    padding: 5px 5px 5px 10%;
+    row-gap: 1em;
+}
+
+.taskList .item{
+    display: flex;
+    gap: 10px;
+}
+.taskList .item .radioButton,.deleteItem {
+    align-self: center;
+}
