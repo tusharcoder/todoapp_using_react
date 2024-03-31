@@ -1,10 +1,27 @@
+import {useEffect, useState} from "react";
+import {getOpenTasks} from "../services/TaskService";
+
 const TaskList = (props)=>{
-    const tasks = props.tasks||[
-        {text:"lorem ipsum...lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum"},
-        {text:"lorem ipsum...lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum"},
-        {text:"lorem ipsum...lorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsumlorem ipsum"},
-    ];
+    const status = props.status;
     const name = props.name || "Tasks"
+    const [tasks,setTasks] = useState([]);
+    useEffect(()=>{
+        if(status){
+            getOpenTasks(status).then((response)=>{
+                try {
+                    return response.data;
+                }catch (e){
+                    console.log("Error in parsing response.")
+                    throw e;
+                }
+            }).then((result)=>{
+                setTasks(result.data);
+                }
+            ).catch((error)=>{
+                console.log(`Error while fetching the ${status} tasks`)
+            })
+        }
+    },[status, setTasks])
     return (
         <div className="taskList">
 
